@@ -25,7 +25,7 @@ parser = WebhookParser(config.get('line-bot', 'channel_secret'))
 # 接收 LINE 的資訊
 @app.route("/callback", methods=['POST'])
 def callback():
-    score = 0
+    global score
     if request.method == 'POST':
         signature = request.headers['X-Line-Signature']
         body = request.get_data(as_text=True)
@@ -82,6 +82,7 @@ def callback():
                                 )
                             )
                         )
+                    print(f'current score: {score}')
                 if event.postback.data == 'Next2':  # 跳出第2題
                     line_bot_api.reply_message(
                         event.reply_token,
@@ -123,6 +124,7 @@ def callback():
                                 )
                             )
                         )
+                    print(f'current score: {score}')
                 if event.postback.data == 'Next3':  # 跳出第3題
                     line_bot_api.reply_message(
                         event.reply_token,
@@ -164,6 +166,7 @@ def callback():
                                 )
                             )
                         )
+                    print(f'current score: {score}')
                 if event.postback.data == 'Next4':  # 跳出第4題
                     line_bot_api.reply_message(
                         event.reply_token,
@@ -182,7 +185,6 @@ def callback():
                         )
                     )
                 if event.postback.data[0] == '4':  # 回答第4題
-                    print(f'第4題選擇的是: {event.postback.data}')
                     if event.postback.data[1:] in ['Java', 'JavaScript', 'Python']:
                         print('我答錯了第4題')
                         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=f'第4題答錯，遊戲結束，總分為{score}'))
@@ -212,16 +214,13 @@ def callback():
                         #     )
                         # )
                         # print(f'按下算總分 label 後的 postback.data: {event.postback.data}')
+                    score = 0  # 遊戲結束，還原分數
                 # elif event.postback.data == 'calc':  # 作答完畢，計算總分
                 #     print(f'第4題選擇後是: {event.postback.data}')
                 #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=f'遊戲結束，總分為{score}'))
-            else:  # 本區目前沒有作用
-                line_bot_api.reply_message(  # 確保使用者輸入 test 才會進行遊戲
-                    event.reply_token,
-                    TextSendMessage(text=f'請輸入 test 以開始測試')
-                )
     return 'OK'
 
 
 if __name__ == '__main__':
+    score = 0
     app.run(debug=True)
