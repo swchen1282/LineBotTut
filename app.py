@@ -132,18 +132,18 @@ def callback():
                             alt_text='Buttons template',
                             template=ButtonsTemplate(
                                 title='第三題',
-                                text='hello no3',
+                                text='運算思維可分為4個步驟，下列何者為非？',
                                 actions=[
-                                    PostbackTemplateAction(label='a', text='a', data='3a'),
-                                    PostbackTemplateAction(label='b', text='b', data='3b'),
-                                    PostbackTemplateAction(label='c', text='c', data='3c'),
-                                    PostbackTemplateAction(label='d', text='d', data='3d')
+                                    PostbackTemplateAction(label='唉聲嘆氣', text='唉聲嘆氣', data='3唉聲嘆氣'),
+                                    PostbackTemplateAction(label='問題拆解', text='問題拆解', data='3問題拆解'),
+                                    PostbackTemplateAction(label='規律辨識', text='規律辨識', data='3規律辨識'),
+                                    PostbackTemplateAction(label='抽象化與具體化', text='抽象化與具體化', data='3抽象化與具體化')
                                 ]
                             )
                         )
                     )
                 if event.postback.data[0] == '3':  # 回答第3題
-                    if event.postback.data[1:] in ['a', 'b', 'c']:  # 第3題答錯
+                    if event.postback.data[1:] in ['問題拆解', '規律辨識', '抽象化與具體化']:  # 第3題答錯
                         line_bot_api.reply_message(
                             event.reply_token,
                             TemplateSendMessage(
@@ -154,7 +154,7 @@ def callback():
                                 )
                             )
                         )
-                    if event.postback.data[1:] in ['d']:  # 第3題答對:
+                    if event.postback.data[1:] in ['唉聲嘆氣']:  # 第3題答對:
                         score += 25
                         line_bot_api.reply_message(
                             event.reply_token,
